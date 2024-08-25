@@ -24,6 +24,12 @@ import { JudgeResult, ErrorType, ProgressReportType, OverallResult, SerializedBu
             await remote.reportProgress({ taskId: task.content.taskId, type: ProgressReportType.Started, progress: null });
             result = await judge(task.content, task.extraData, async (progress) => {
                 await remote.reportProgress({ taskId: task.content.taskId, type: ProgressReportType.Progress, progress: progress });
+                console.log("report:");
+                progress.judge.subtasks.forEach((subtask) => {
+                    subtask.cases.forEach((tc) => {
+                        console.log(tc);
+                    });
+                });
             }, async (progress) => {
                 const data = { taskId: task.content.taskId, type: ProgressReportType.Compiled, progress: progress };
                 await remote.reportProgress(data);
@@ -34,6 +40,8 @@ import { JudgeResult, ErrorType, ProgressReportType, OverallResult, SerializedBu
             result = { error: ErrorType.SystemError, systemMessage: `An error occurred.\n${err.toString()}` };
         }
         const resultReport = { taskId: task.content.taskId, type: ProgressReportType.Finished, progress: result };
+        console.log("result report:");
+        console.log(result.judge);
         await remote.reportProgress(resultReport);
         await remote.reportResult(resultReport);
     });

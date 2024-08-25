@@ -11,6 +11,7 @@ export interface UserSubtask {
     score: number;
     type: string;
     cases: (string | number)[];
+    dependencies?: number[];
 }
 
 export interface UserConfigFile {
@@ -68,7 +69,13 @@ async function parseYamlContent(obj: UserConfigFile, dataName: string): Promise<
                 output: obj.outputFile ? filterPath(obj.outputFile.replace('#', c.toString())) : null,
                 userOutputFile: obj.userOutput ? filterPath(obj.userOutput.replace('#', c.toString())) : null,
                 name: c.toString()
-            }))
+            })),
+            dependencies: (s.dependencies || []).map(index => {
+                if (!Number.isInteger(index)) throw new Error('子任务依赖编号必须为整数');
+                if (index < 1 || index > obj.subtasks.length) throw new Error(`子任务依赖编号 ${index} 超出范围`);
+                return index;
+            }),
+            //here
         })),
         spj: obj.specialJudge && await parseExecutable(obj.specialJudge, dataPath),
         extraSourceFiles: extraFiles,

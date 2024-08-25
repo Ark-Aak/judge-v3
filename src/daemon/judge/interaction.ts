@@ -35,9 +35,11 @@ export class InteractionJudger extends JudgerBase {
                 if (interactorResult.message != null && interactorResult.message !== "") {
                     message = "===== Interactor Compilation Message =====" + interactorResult.message;
                 }
+                console.log("Special judge CE: " + interactorResult.message);
                 throw new Error(message);
             } else {
                 this.interactorExecutableName = interactorExecutableName;
+                console.log("Interactor executable name: " + this.interactorExecutableName);
             }
         } else {
             this.interactorExecutableName = null;

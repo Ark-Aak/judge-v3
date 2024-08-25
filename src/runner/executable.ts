@@ -37,6 +37,8 @@ export async function pushBinary(name: string, language: Language, code: string,
 export async function fetchBinary(name: string): Promise<[string, Language, string]> {
     winston.verbose(`Fetching binary ${name}...`);
     await fse.ensureDir(Cfg.binaryDirectory);
+    console.log(Cfg.binaryDirectory);
+    console.log(name);
     const targetName = pathLib.join(Cfg.binaryDirectory, name);
     const lockFileName = pathLib.join(Cfg.binaryDirectory, `${name}-get.lock`);
 

@@ -96,6 +96,7 @@ export async function judgeAnswerSubmission(task: AnswerSubmissionRunTask)
         await fse.writeFile(pathLib.join(spjWorkingDir, "user_out"), task.userAnswer);
 
         if (task.spjExecutableName != null) {
+            console.log("1111111111");
             const [spjBinDir, spjLanguage] = await fetchBinary(task.spjExecutableName);
             winston.debug(`Using spj, language: ${spjLanguage.name}`);
             if (inputFilePath != null)
@@ -165,6 +166,7 @@ export async function judgeStandard(task: StandardRunTask)
         }
 
         winston.debug("Fetching user binary...");
+        console.log("222222222");
         const [binaryDirectory, language, userCode] = await fetchBinary(task.userExecutableName);
 
         winston.debug("Running user program...");
@@ -227,6 +229,7 @@ export async function judgeStandard(task: StandardRunTask)
                 await fse.copy(answerFilePath, pathLib.join(spjWorkingDir, 'answer'));
 
             if (task.spjExecutableName != null) {
+                console.log("333333333");
                 const [spjBinDir, spjLanguage] = await fetchBinary(task.spjExecutableName);
                 winston.debug(`Using spj, language: ${spjLanguage.name}`);
                 if (inputFilePath != null)
@@ -262,6 +265,7 @@ export async function judgeInteraction(task: InteractionRunTask)
     : Promise<StandardRunResult> {
     let pipe1 = null, pipe2 = null;
     try {
+        console.log(task);
         const testDataPath = pathLib.join(Cfg.testDataDirectory, task.testDataName);
         const inputFilePath = task.inputData != null ?
             pathLib.join(testDataPath, task.inputData) : null;
@@ -283,8 +287,10 @@ export async function judgeInteraction(task: InteractionRunTask)
         }
 
         winston.debug("Fetching user binary...");
+        console.log("444444444");
         const [userBinaryDirectory, userLanguage, userCode] = await fetchBinary(task.userExecutableName);
         winston.debug("Fetching interactor binary...");
+        console.log("555555555");
         const [interactorBinaryDirectory, interactorLanguage] = await fetchBinary(task.interactorExecutableName);
 
         await fse.writeFile(pathLib.join(spjWorkingDir, 'code'), userCode);
